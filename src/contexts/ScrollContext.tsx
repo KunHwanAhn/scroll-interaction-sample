@@ -35,9 +35,11 @@ export function ScrollContextProvider({ children }: { children: ReactNode }) {
     };
     window.addEventListener('load', updateInnerHeight);
     window.addEventListener('resize', updateInnerHeight);
+    window.addEventListener('orientationchange', updateInnerHeight);
     return () => {
       window.removeEventListener('load', updateInnerHeight);
       window.removeEventListener('resize', updateInnerHeight);
+      window.removeEventListener('orientationchange', updateInnerHeight);
     };
   }, []);
 
