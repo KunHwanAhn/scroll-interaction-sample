@@ -18,3 +18,12 @@ export const calcValueWithScroll = (values: ScrollValues, currYOffset: number, s
 
   return result;
 };
+
+export type ValueStartEnd = [number, number];
+export const createValues = (valueStartEnd: ValueStartEnd, rangeStart: number, rangeEnd: number): ScrollValues => [
+  ...valueStartEnd,
+  {
+    start: rangeStart,
+    end: rangeEnd,
+  },
+];

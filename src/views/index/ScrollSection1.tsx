@@ -7,7 +7,11 @@ import _styled from '@emotion/styled';
 
 import { useScrollContext } from '@/contexts/ScrollContext.js';
 
-import { calcValueWithScroll } from './utils.js';
+import {
+  calcValueWithScroll,
+  createValues,
+  ValueStartEnd,
+} from './utils.js';
 
 import ScrollSection from './components/ScrollSection.js';
 import StickyElement from './components/StickyElement.js';
@@ -22,56 +26,56 @@ const ANIMATIONS_INFO = {
     IN: {
       START: 0.1,
       END: 0.2,
-      OPACITY: [0, 1],
-      TRANSLATE_Y: [20, 0],
+      OPACITY: [0, 1] as ValueStartEnd,
+      TRANSLATE_Y: [20, 0] as ValueStartEnd,
     },
     OUT: {
       START: 0.25,
       END: 0.3,
-      OPACITY: [1, 0],
-      TRANSLATE_Y: [0, -20],
+      OPACITY: [1, 0] as ValueStartEnd,
+      TRANSLATE_Y: [0, -20] as ValueStartEnd,
     },
   },
   MESSAGE_B: {
     IN: {
       START: 0.3,
       END: 0.4,
-      OPACITY: [0, 1],
-      TRANSLATE_Y: [20, 0],
+      OPACITY: [0, 1] as ValueStartEnd,
+      TRANSLATE_Y: [20, 0] as ValueStartEnd,
     },
     OUT: {
       START: 0.45,
       END: 0.5,
-      OPACITY: [1, 0],
-      TRANSLATE_Y: [0, -20],
+      OPACITY: [1, 0] as ValueStartEnd,
+      TRANSLATE_Y: [0, -20] as ValueStartEnd,
     },
   },
   MESSAGE_C: {
     IN: {
       START: 0.5,
       END: 0.6,
-      OPACITY: [0, 1],
-      TRANSLATE_Y: [20, 0],
+      OPACITY: [0, 1] as ValueStartEnd,
+      TRANSLATE_Y: [20, 0] as ValueStartEnd,
     },
     OUT: {
       START: 0.65,
       END: 0.7,
-      OPACITY: [1, 0],
-      TRANSLATE_Y: [0, -20],
+      OPACITY: [1, 0] as ValueStartEnd,
+      TRANSLATE_Y: [0, -20] as ValueStartEnd,
     },
   },
   MESSAGE_D: {
     IN: {
       START: 0.7,
       END: 0.8,
-      OPACITY: [0, 1],
-      TRANSLATE_Y: [20, 0],
+      OPACITY: [0, 1] as ValueStartEnd,
+      TRANSLATE_Y: [20, 0] as ValueStartEnd,
     },
     OUT: {
       START: 0.85,
       END: 0.9,
-      OPACITY: [1, 0],
-      TRANSLATE_Y: [0, -20],
+      OPACITY: [1, 0] as ValueStartEnd,
+      TRANSLATE_Y: [0, -20] as ValueStartEnd,
     },
   },
 };
@@ -132,12 +136,12 @@ export default function ScrollSection1() {
   const styleA: CSSProperties = {
     ...style,
     opacity: calcValueWithScroll(
-      [animationMessageA.OPACITY[0], animationMessageA.OPACITY[1], { start: animationMessageA.START, end: animationMessageA.END }],
+      createValues(animationMessageA.OPACITY, animationMessageA.START, animationMessageA.END),
       currYOffset,
       sectionHeight,
     ),
     transform: `translate3D(0, ${calcValueWithScroll(
-      [animationMessageA.TRANSLATE_Y[0], animationMessageA.TRANSLATE_Y[1], { start: animationMessageA.START, end: animationMessageA.END }],
+      createValues(animationMessageA.TRANSLATE_Y, animationMessageA.START, animationMessageA.END),
       currYOffset,
       sectionHeight,
     )}%, 0)`,
@@ -146,12 +150,12 @@ export default function ScrollSection1() {
   const styleB: CSSProperties = {
     ...style,
     opacity: calcValueWithScroll(
-      [animationMessageB.OPACITY[0], animationMessageB.OPACITY[1], { start: animationMessageB.START, end: animationMessageB.END }],
+      createValues(animationMessageB.OPACITY, animationMessageB.START, animationMessageB.END),
       currYOffset,
       sectionHeight,
     ),
     transform: `translate3D(0, ${calcValueWithScroll(
-      [animationMessageB.TRANSLATE_Y[0], animationMessageB.TRANSLATE_Y[1], { start: animationMessageB.START, end: animationMessageB.END }],
+      createValues(animationMessageB.TRANSLATE_Y, animationMessageB.START, animationMessageB.END),
       currYOffset,
       sectionHeight,
     )}%, 0)`,
@@ -159,12 +163,12 @@ export default function ScrollSection1() {
   const styleC: CSSProperties = {
     ...style,
     opacity: calcValueWithScroll(
-      [animationMessageC.OPACITY[0], animationMessageC.OPACITY[1], { start: animationMessageC.START, end: animationMessageC.END }],
+      createValues(animationMessageC.OPACITY, animationMessageC.START, animationMessageC.END),
       currYOffset,
       sectionHeight,
     ),
     transform: `translate3D(0, ${calcValueWithScroll(
-      [animationMessageC.TRANSLATE_Y[0], animationMessageC.TRANSLATE_Y[1], { start: animationMessageC.START, end: animationMessageC.END }],
+      createValues(animationMessageC.TRANSLATE_Y, animationMessageC.START, animationMessageC.END),
       currYOffset,
       sectionHeight,
     )}%, 0)`,
@@ -172,12 +176,12 @@ export default function ScrollSection1() {
   const styleD: CSSProperties = {
     ...style,
     opacity: calcValueWithScroll(
-      [animationMessageD.OPACITY[0], animationMessageD.OPACITY[1], { start: animationMessageD.START, end: animationMessageD.END }],
+      createValues(animationMessageD.OPACITY, animationMessageD.START, animationMessageD.END),
       currYOffset,
       sectionHeight,
     ),
     transform: `translate3D(0, ${calcValueWithScroll(
-      [animationMessageD.TRANSLATE_Y[0], animationMessageD.TRANSLATE_Y[1], { start: animationMessageD.START, end: animationMessageD.END }],
+      createValues(animationMessageD.TRANSLATE_Y, animationMessageD.START, animationMessageD.END),
       currYOffset,
       sectionHeight,
     )}%, 0)`,
