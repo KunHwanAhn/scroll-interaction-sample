@@ -38,6 +38,7 @@ const config = {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
     extensionAlias: {
       '.js': ['.ts', '.tsx', '.js', '.jsx'],
+      '.jsx': ['.tsx', '.jsx'],
     },
   },
   optimization: {
