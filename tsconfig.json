@@ -1,5 +1,5 @@
 {
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*", "./@types/**/*"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "target": "ES2015",
@@ -29,5 +29,6 @@
     "paths": {
       "@/*": ["./src/*"],
     },
+    "typeRoots": ["./node_modules/@types", "./@types"],
   }
 }
