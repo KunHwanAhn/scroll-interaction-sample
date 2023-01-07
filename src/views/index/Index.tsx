@@ -10,8 +10,6 @@ export default function Index() {
     <ScrollContextProvider>
       <LocalNav />
       <ScrollSection1 />
-      {/* TODO: 스크롤 발생용 임시 블록 */}
-      <div style={{ height: '2000px' }} />
     </ScrollContextProvider>
   );
 }

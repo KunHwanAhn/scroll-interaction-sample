@@ -5,7 +5,10 @@ import { useScrollContext } from '@/contexts/index.js';
 
 const styled = _styled.default || _styled;
 
-const Section = styled('div')(() => ({ position: 'relative' }));
+const Section = styled('div')(() => ({
+  paddingTop: '45vh',
+  position: 'relative',
+}));
 
 interface NormalSectionType { type: 'normal' }
 interface StickySectionType { type: 'sticky', heightNum: number }

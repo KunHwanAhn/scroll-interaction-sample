@@ -7,19 +7,24 @@ import React, {
   ReactNode,
 } from 'react';
 
+const BASE_HEIGHT = 1080;
+
 type ScrollContextType = {
   scrollY: number;
   innerHeight: number;
+  heightRatio: number;
 };
 
 const ScrollContext = createContext<ScrollContextType>({
   scrollY: window.scrollY,
   innerHeight: window.innerHeight,
+  heightRatio: window.innerHeight / BASE_HEIGHT,
 });
 
 export function ScrollContextProvider({ children }: { children: ReactNode }) {
   const [scrollY, setScrollY] = useState<number>(window.scrollY);
   const [innerHeight, setInnerHeight] = useState<number>(window.innerHeight);
+  const heightRatio = useMemo(() => innerHeight / BASE_HEIGHT, [innerHeight]);
 
   // 스크롤 이벤트
   useEffect(() => {
@@ -44,8 +49,10 @@ export function ScrollContextProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const contextValue: ScrollContextType = useMemo(() => ({
-    scrollY, innerHeight,
-  }), [scrollY, innerHeight]);
+    scrollY,
+    innerHeight,
+    heightRatio,
+  }), [scrollY, innerHeight, heightRatio]);
 
   return (
     <ScrollContext.Provider value={contextValue}>

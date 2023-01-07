@@ -15,6 +15,7 @@ import {
 
 import ScrollSection from './components/ScrollSection.js';
 import StickyElement from './components/StickyElement.js';
+import StikcyCanvas from './components/StikcyCanvas.js';
 
 const styled = _styled.default || _styled;
 
@@ -79,6 +80,11 @@ const ANIMATIONS_INFO = {
     },
   },
 };
+const CANVAS_ANIMATION = {
+  START: 0.9,
+  END: 1,
+  OPACITY: [1, 0] as ValueStartEnd,
+};
 
 type Messages = keyof typeof ANIMATIONS_INFO;
 const getAnimation = (key: Messages, scrollRatio: number) => {
@@ -93,7 +99,6 @@ const getAnimation = (key: Messages, scrollRatio: number) => {
 };
 
 const MainTitle = styled('h1')(({ theme }) => ({
-  paddingTop: '45vh',
   position: 'relative',
   zIndex: 5,
   textAlign: 'center',
@@ -119,13 +124,35 @@ const SubTitle = styled('p')(({ theme }) => ({
 export default function ScrollSection1() {
   const { innerHeight, scrollY } = useScrollContext();
   const sectionRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const sectionHeight = useMemo(() => innerHeight * SECTION_HEIGHT_NUM, [innerHeight]);
   const currYOffset = scrollY - (sectionRef.current?.offsetTop ?? 0);
   const scrollRatio = currYOffset / sectionHeight;
 
+  if (canvasRef.current) {
+    const canvasContext = canvasRef.current.getContext('2d');
+    if (canvasContext) {
+      const { width, height } = canvasRef.current;
+      const text = `Background Index ${Math.round(scrollRatio * 100)}`;
+      const { width: textWidth } = canvasContext.measureText(text);
+
+      canvasContext.clearRect(0, 0, width, height);
+      canvasContext.font = '2rem Roboto,Noto Sans Kr';
+      canvasContext.fillStyle = 'rgb(99, 99, 99)';
+      canvasContext.fillText(text, (width / 2) - (textWidth / 2), 400);
+    }
+    canvasRef.current.style.opacity = `${calcValueWithScroll(
+      createValues(CANVAS_ANIMATION.OPACITY, CANVAS_ANIMATION.START, CANVAS_ANIMATION.END),
+      currYOffset,
+      sectionHeight,
+    )}`;
+  }
+
+  const display = sectionHeight < scrollY ? 'none' : undefined;
+
   const style: CSSProperties = {
     top: POSITION_TOP,
-    display: sectionHeight < scrollY ? 'none' : undefined,
+    display,
   };
 
   const animationMessageA = getAnimation('MESSAGE_A', scrollRatio);
@@ -193,6 +220,10 @@ export default function ScrollSection1() {
       type="sticky"
       heightNum={SECTION_HEIGHT_NUM}
     >
+      <StikcyCanvas
+        ref={canvasRef}
+        style={{ display }}
+      />
       <MainTitle>Main Title</MainTitle>
       <StickyElement style={styleA}>
         <SubTitle>Subtitle 1</SubTitle>
