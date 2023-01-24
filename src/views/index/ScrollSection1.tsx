@@ -177,6 +177,7 @@ export default function ScrollSection1() {
     };
 
     return {
+      key,
       text: MESSAGE_TEXT_MAP[key],
       style: messageStyle,
     };
@@ -193,9 +194,9 @@ export default function ScrollSection1() {
         style={{ display }}
       />
       <MainTitle>Main Title</MainTitle>
-      {stickyElements.map(({ text, style }) => (
+      {stickyElements.map(({ key, text, style }) => (
         <StickyElement
-          key={`subtitle-${text}`}
+          key={`section1-${key}`}
           style={style}
         >
           <SubTitle>{text}</SubTitle>
