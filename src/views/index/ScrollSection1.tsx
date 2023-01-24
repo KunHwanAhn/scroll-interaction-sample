@@ -121,6 +121,15 @@ const SubTitle = styled('p')(({ theme }) => ({
   },
 }));
 
+const MESSAGE_KEYS: Messages[] = [
+  'MESSAGE_A', 'MESSAGE_B', 'MESSAGE_C', 'MESSAGE_D',
+];
+const MESSAGE_TEXT_MAP: { [key in Messages]: string } = {
+  MESSAGE_A: 'SubTitle 1',
+  MESSAGE_B: 'SubTitle 2',
+  MESSAGE_C: 'SubTitle 3',
+  MESSAGE_D: 'SubTitle 4',
+};
 export default function ScrollSection1() {
   const { innerHeight, scrollY } = useScrollContext();
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -137,7 +146,7 @@ export default function ScrollSection1() {
       const { width: textWidth } = canvasContext.measureText(text);
 
       canvasContext.clearRect(0, 0, width, height);
-      canvasContext.font = '2rem Roboto,Noto Sans Kr';
+      canvasContext.font = '2rem Roboto,Noto Sans KR';
       canvasContext.fillStyle = 'rgb(99, 99, 99)';
       canvasContext.fillText(text, (width / 2) - (textWidth / 2), 400);
     }
@@ -150,69 +159,28 @@ export default function ScrollSection1() {
 
   const display = sectionHeight < scrollY ? 'none' : undefined;
 
-  const style: CSSProperties = {
-    top: POSITION_TOP,
-    display,
-  };
+  const stickyElements = MESSAGE_KEYS.map((key) => {
+    const messageAnimation = getAnimation(key, scrollRatio);
+    const messageStyle: CSSProperties = {
+      display,
+      top: POSITION_TOP,
+      opacity: calcValueWithScroll(
+        createValues(messageAnimation.OPACITY, messageAnimation.START, messageAnimation.END),
+        currYOffset,
+        sectionHeight,
+      ),
+      transform: `translate3D(0, ${calcValueWithScroll(
+        createValues(messageAnimation.TRANSLATE_Y, messageAnimation.START, messageAnimation.END),
+        currYOffset,
+        sectionHeight,
+      )}%, 0)`,
+    };
 
-  const animationMessageA = getAnimation('MESSAGE_A', scrollRatio);
-  const animationMessageB = getAnimation('MESSAGE_B', scrollRatio);
-  const animationMessageC = getAnimation('MESSAGE_C', scrollRatio);
-  const animationMessageD = getAnimation('MESSAGE_D', scrollRatio);
-
-  const styleA: CSSProperties = {
-    ...style,
-    opacity: calcValueWithScroll(
-      createValues(animationMessageA.OPACITY, animationMessageA.START, animationMessageA.END),
-      currYOffset,
-      sectionHeight,
-    ),
-    transform: `translate3D(0, ${calcValueWithScroll(
-      createValues(animationMessageA.TRANSLATE_Y, animationMessageA.START, animationMessageA.END),
-      currYOffset,
-      sectionHeight,
-    )}%, 0)`,
-  };
-
-  const styleB: CSSProperties = {
-    ...style,
-    opacity: calcValueWithScroll(
-      createValues(animationMessageB.OPACITY, animationMessageB.START, animationMessageB.END),
-      currYOffset,
-      sectionHeight,
-    ),
-    transform: `translate3D(0, ${calcValueWithScroll(
-      createValues(animationMessageB.TRANSLATE_Y, animationMessageB.START, animationMessageB.END),
-      currYOffset,
-      sectionHeight,
-    )}%, 0)`,
-  };
-  const styleC: CSSProperties = {
-    ...style,
-    opacity: calcValueWithScroll(
-      createValues(animationMessageC.OPACITY, animationMessageC.START, animationMessageC.END),
-      currYOffset,
-      sectionHeight,
-    ),
-    transform: `translate3D(0, ${calcValueWithScroll(
-      createValues(animationMessageC.TRANSLATE_Y, animationMessageC.START, animationMessageC.END),
-      currYOffset,
-      sectionHeight,
-    )}%, 0)`,
-  };
-  const styleD: CSSProperties = {
-    ...style,
-    opacity: calcValueWithScroll(
-      createValues(animationMessageD.OPACITY, animationMessageD.START, animationMessageD.END),
-      currYOffset,
-      sectionHeight,
-    ),
-    transform: `translate3D(0, ${calcValueWithScroll(
-      createValues(animationMessageD.TRANSLATE_Y, animationMessageD.START, animationMessageD.END),
-      currYOffset,
-      sectionHeight,
-    )}%, 0)`,
-  };
+    return {
+      text: MESSAGE_TEXT_MAP[key],
+      style: messageStyle,
+    };
+  });
 
   return (
     <ScrollSection
@@ -225,18 +193,14 @@ export default function ScrollSection1() {
         style={{ display }}
       />
       <MainTitle>Main Title</MainTitle>
-      <StickyElement style={styleA}>
-        <SubTitle>Subtitle 1</SubTitle>
-      </StickyElement>
-      <StickyElement style={styleB}>
-        <SubTitle>Subtitle 2</SubTitle>
-      </StickyElement>
-      <StickyElement style={styleC}>
-        <SubTitle>Subtitle 3</SubTitle>
-      </StickyElement>
-      <StickyElement style={styleD}>
-        <SubTitle>Subtitle 4</SubTitle>
-      </StickyElement>
+      {stickyElements.map(({ text, style }) => (
+        <StickyElement
+          key={`subtitle-${text}`}
+          style={style}
+        >
+          <SubTitle>{text}</SubTitle>
+        </StickyElement>
+      ))}
     </ScrollSection>
   );
 }
