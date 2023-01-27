@@ -14,15 +14,20 @@ interface NormalSectionType { type: 'normal' }
 interface StickySectionType { type: 'sticky', heightNum: number }
 type ScrollSectionType = NormalSectionType | StickySectionType;
 type ScrollSectionProps = ScrollSectionType & {
-  children: ReactNode
+  children: ReactNode;
+  className?: string;
 };
-export default forwardRef<HTMLDivElement, ScrollSectionProps>((props, ref) => {
-  const { children, type } = props;
+
+const ScrollSection = forwardRef<HTMLDivElement, ScrollSectionProps>((props, ref) => {
+  const { children, type, className } = props;
   const { innerHeight } = useScrollContext();
 
   if (type === 'normal') {
     return (
-      <Section ref={ref}>
+      <Section
+        ref={ref}
+        className={className}
+      >
         {children}
       </Section>
     );
@@ -33,6 +38,7 @@ export default forwardRef<HTMLDivElement, ScrollSectionProps>((props, ref) => {
   return (
     <Section
       ref={ref}
+      className={className}
       style={{
         height: heightNum * innerHeight,
       }}
@@ -41,3 +47,8 @@ export default forwardRef<HTMLDivElement, ScrollSectionProps>((props, ref) => {
     </Section>
   );
 });
+ScrollSection.defaultProps = {
+  className: undefined,
+};
+
+export default ScrollSection;
