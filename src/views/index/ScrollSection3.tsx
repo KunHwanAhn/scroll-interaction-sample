@@ -44,6 +44,18 @@ const BlendImageCanvas = styled('canvas')(() => ({
   },
 }));
 
+const CanvasCaption = styled('div')(({ theme }) => ({
+  margin: '0 auto',
+  padding: '0 1rem',
+  maxWidth: theme.contentMaxWidth,
+  fontSize: '1.2rem',
+  color: '#888888',
+
+  [theme.breakpoints.desktop]: {
+    fontSize: '2rem',
+  },
+}));
+
 const BACKGROUND_IMAGE_PATH = [
   '/img/background/bg-1.jpg',
   '/img/background/bg-2.jpg',
@@ -70,7 +82,7 @@ export default function ScrollSection3() {
     return canvasWidthRatio <= canvasHeightRatio ? canvasHeightRatio : canvasWidthRatio;
   }, [innerWidth, innerHeight, canvasWidth, canvasHeight]);
   const topOffset = useMemo(() => {
-    const offset = (canvasHeight - canvasHeight * canvasScaleRatio) * 0.25;
+    const offset = (canvasHeight - canvasHeight * canvasScaleRatio) * 0.5;
 
     return Number.isNaN(offset) ? 0 : offset;
   }, [canvasHeight, canvasScaleRatio]);
@@ -110,6 +122,16 @@ export default function ScrollSection3() {
     blendImageHeight[2].end,
     blendImageHeight[2].end + 0.2,
   ), [canvasScaleRatio, innerWidth, canvasWidth, blendImageHeight]);
+  const canvasCaptionOpacity = useMemo(() => createValues(
+    [0, 1],
+    canvasScale[2].end,
+    canvasScale[2].end + 0.05,
+  ), [canvasScale]);
+  const canvasCaptionTranslateY = useMemo(() => createValues(
+    [20, 0],
+    canvasScale[2].end,
+    canvasScale[2].end + 0.05,
+  ), [canvasScale]);
 
   useEffect(() => { setCanvasOffsetTop(() => canvasRef.current?.offsetTop ?? 0); }, [innerWidth, innerHeight]);
   useEffect(() => {
@@ -138,7 +160,7 @@ export default function ScrollSection3() {
   if (canvasRef.current && imageLoaded) {
     const canvasContext = canvasRef.current.getContext('2d');
     if (canvasContext) {
-      canvasRef.current.style.transformOrigin = 'center 25%';
+      // canvasRef.current.style.transformOrigin = 'center 35%';
       canvasRef.current.style.transform = `scale(${canvasScaleRatio})`;
 
       // NOTE: 기본 이미지
@@ -185,10 +207,15 @@ export default function ScrollSection3() {
     fixedClass = 'fixed';
   }
 
-  let marginTop;
+  let canvasMarginTop;
   if (scrollRatio >= canvasScale[2].end) {
-    // marginTop = `${(sectionHeight * canvasScale[2].start) + topOffset}px`;
-    marginTop = `${sectionHeight * 0.4}px`;
+    canvasMarginTop = `${sectionHeight * 0.4}px`;
+  }
+
+  let canvasCaptionMarginTop;
+  if (scrollRatio >= canvasCaptionOpacity[2].start) {
+    // eslint-disable-next-line max-len
+    canvasCaptionMarginTop = `-${(((canvasRef.current?.height ?? 0) - ((canvasRef.current?.height ?? 0) * calcValueWithScroll(canvasScale, currYOffset, sectionHeight))) * 0.5) - 10}px`;
   }
 
   return (
@@ -210,13 +237,19 @@ export default function ScrollSection3() {
         height="1080"
         style={{
           top: -topOffset,
-          marginTop,
+          marginTop: canvasMarginTop,
         }}
       />
-      <div>
+      <CanvasCaption
+        style={{
+          marginTop: canvasCaptionMarginTop,
+          opacity: calcValueWithScroll(canvasCaptionOpacity, currYOffset, sectionHeight),
+          transform: `translateY(${calcValueWithScroll(canvasCaptionTranslateY, currYOffset, sectionHeight)}%)`,
+        }}
+      >
         {/* eslint-disable-next-line max-len */}
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit cupiditate similique dolore. Eligendi harum voluptatibus vero esse minima tempora recusandae enim a blanditiis necessitatibus quaerat laborum ab illo quasi amet dolor est aut beatae minus, voluptate consequuntur adipisci nihil. Inventore libero laboriosam, ratione doloremque aut et, quidem voluptatibus tempore id in placeat qui debitis quo esse cupiditate, fugit mollitia sunt fuga. Vitae atque, magnam possimus culpa omnis repudiandae quas, asperiores voluptate quisquam, ipsam illum recusandae praesentium aperiam laudantium quae tempora. Exercitationem tempore aperiam amet repellat provident quisquam magnam doloremque mollitia nobis, beatae eaque cum, deleniti esse a minima. Accusantium dignissimos, molestias tenetur ratione incidunt sunt. Assumenda reiciendis, minus eius reprehenderit soluta amet quibusdam totam tempora alias corporis sint nulla dolor facere inventore, ut pariatur quia hic? Laboriosam reiciendis quia suscipit inventore ducimus quo quisquam voluptatem optio accusamus. Vel ipsum odio, quis suscipit voluptatum architecto assumenda adipisci et. Est nam cumque blanditiis unde eveniet, beatae repudiandae officiis quas molestias, minima ipsa non libero rerum ex? Possimus modi autem ipsa ea, non qui et vel. Deleniti esse magnam at ullam enim accusantium mollitia excepturi similique dolore cumque? Possimus laboriosam atque cupiditate recusandae culpa quasi ducimus nostrum nihil. Illo, nulla! Hic, magni consequuntur.
-      </div>
+      </CanvasCaption>
     </CenterAlignScrollSection>
   );
 }
