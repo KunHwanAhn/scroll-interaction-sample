@@ -160,7 +160,6 @@ export default function ScrollSection3() {
   if (canvasRef.current && imageLoaded) {
     const canvasContext = canvasRef.current.getContext('2d');
     if (canvasContext) {
-      // canvasRef.current.style.transformOrigin = 'center 35%';
       canvasRef.current.style.transform = `scale(${canvasScaleRatio})`;
 
       // NOTE: 기본 이미지
