@@ -4,8 +4,7 @@ Scroll Interaction Page Sample
 ## Video
 
 ### Desktop
-https://user-images.githubusercontent.com/3446660/211139477-25319480-c632-45fa-bcbd-38990d80ccaa.mov
-
+[![2023-01-29-desktop](https://user-images.githubusercontent.com/3446660/215312702-ad405731-df0e-418e-813e-d09bec9b5b8c.png)](https://youtu.be/irba61Pepjc "Desktop")
 
 ### Mobile
-https://user-images.githubusercontent.com/3446660/211139488-d27b237b-e9a4-441e-a499-e4d2076841ed.mov
+[![2023-01-29-mobile](https://user-images.githubusercontent.com/3446660/215312725-680b80c9-312e-43c9-bf10-067c84187d72.png)](https://youtube.com/shorts/xcJB-W2v5cc?feature=share "Mobile")
