@@ -136,7 +136,7 @@ export default function ScrollSection1() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sectionHeight = useMemo(() => innerHeight * SECTION_HEIGHT_NUM, [innerHeight]);
   const currYOffset = scrollY - (sectionRef.current?.offsetTop ?? 0);
-  const scrollRatio = currYOffset / sectionHeight;
+  const scrollRatio = useMemo(() => currYOffset / sectionHeight, [currYOffset, sectionHeight]);
 
   if (canvasRef.current) {
     const canvasContext = canvasRef.current.getContext('2d');
